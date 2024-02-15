@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+    *,
+    ::after,
+    ::before {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.875rem;
+        opacity: 1;
+        overflow-y: scroll;
+        margin: 0;
+    }
+
+    a {
+        cursor: pointer;
+        text-decoration: none;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    h4 {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.275rem;
+        color: var(--bs-emphasis-color);
+    }
+
+    /* Layout for admin dashboard skeleton */
+
+    .wrapper {
+        align-items: stretch;
+        display: flex;
+        width: 100%;
+    }
+
+    #sidebar {
+        max-width: 264px;
+        min-width: 264px;
+        background: var(--bs-dark);
+        transition: all 0.35s ease-in-out;
+    }
+
+    .main {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        min-width: 0;
+        overflow: hidden;
+        transition: all 0.35s ease-in-out;
+        width: 100%;
+        background: var(--bs-dark-bg-subtle);
+    }
+
+    /* Sidebar Elements Style */
+
+    .sidebar-logo {
+        padding: 1.15rem;
+    }
+
+    .sidebar-logo a {
+        color: #e9ecef;
+        font-size: 1.15rem;
+        font-weight: 600;
+    }
+
+    .sidebar-nav {
+        flex-grow: 1;
+        list-style: none;
+        margin-bottom: 0;
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    .sidebar-header {
+        color: #e9ecef;
+        font-size: .75rem;
+        padding: 1.5rem 1.5rem .375rem;
+    }
+
+    a.sidebar-link {
+        padding: .625rem 1.625rem;
+        color: #e9ecef;
+        position: relative;
+        display: block;
+        font-size: 0.875rem;
+    }
+
+    .sidebar-link[data-bs-toggle="collapse"]::after {
+        border: solid;
+        border-width: 0 .075rem .075rem 0;
+        content: "";
+        display: inline-block;
+        padding: 2px;
+        position: absolute;
+        right: 1.5rem;
+        top: 1.4rem;
+        transform: rotate(-135deg);
+        transition: all .2s ease-out;
+    }
+
+    .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+        transform: rotate(45deg);
+        transition: all .2s ease-out;
+    }
+
+    .avatar {
+        height: 40px;
+        width: 40px;
+    }
+
+    .navbar-expand .navbar-nav {
+        margin-left: auto;
+    }
+
+    .content {
+        flex: 1;
+        max-width: 100vw;
+        width: 100vw;
+    }
+
+    @media (min-width:768px) {
+        .content {
+            max-width: auto;
+            width: auto;
+        }
+    }
+
+    .card {
+        box-shadow: 0 0 .875rem 0 rgba(255, 255, 255, 0.05);
+        margin-bottom: 24px;
+    }
+
+    .illustration {
+        background-color: var(--bs-primary-bg-subtle);
+        color: var(--bs-emphasis-color);
+    }
+
+    .illustration-img {
+        max-width: 150px;
+        width: 100%;
+    }
+
+    .navbar {
+        background: black;
+    }
+
+    #sidebar.collapsed {
+        margin-left: -264px;
+    }
+
+    .card {
+        background: #ffffff;
+    }
+
+    .main {
+        background: #ffffff;
+    }
+
+    @media (max-width:767.98px) {
+
+
+        .js-sidebar {
+            margin-left: -264px;
+        }
+
+        #sidebar.collapsed {
+            margin-left: 0;
+        }
+
+        .navbar,
+        footer {
+            width: 100vw;
+        }
+    }
+
+    td button {
+        margin-left: 6px;
+        margin-top: 3px;
+        ;
+
+    }
+
+    .theme-toggle {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-65%);
+        text-align: center;
+        z-index: 10;
+        right: 0;
+        left: auto;
+        border: none;
+        background-color: var(--bs-body-color);
+    }
+
+    html[data-bs-theme="dark"] .theme-toggle .fa-sun,
+    html[data-bs-theme="light"] .theme-toggle .fa-moon {
+        cursor: pointer;
+        padding: 10px;
+        display: block;
+        font-size: 1.25rem;
+        color: white;
+    }
+
+    html[data-bs-theme="dark"] .theme-toggle .fa-moon {
+        display: none;
+    }
+
+    html[data-bs-theme="light"] .theme-toggle .fa-sun {
+        display: none;
+    }
+
+    input[type=text],
+    select,
+    textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+
+        margin-top: 6px;
+        margin-bottom: 16px;
+        resize: vertical
+    }
+
+    input[type=submit] {
+        background-color: #04AA6D;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    input[type=submit]:hover {
+        background-color: #45a049;
+    }
+
+    .container {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+
+    .sumbit {
+        margin-top: 20px;
+        margin-left: 867px;
+    }
+
+    .row {
+        margin-left: 5%;
+        gap: 20px;
+    }
+
+    .card-img-top {
+        margin-top: 10px;
+        height: 200px;
+        width: 250px;
+    }
+
+    .card-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: var(--bs-card-title-spacer-y);
+        color: black;
+    }
+
+    .btn-primary {
+        width: 200px;
+        margin-left: 7px;
+    }
+
+    .btn {
+        margin-left: 7px;
+        margin-top: 5px;
+        width: 200px;
+        border-radius: 2rem;
+    }
+
+    .edit {
+        color: black;
+
+    }
+
+    a.edit:hover {
+        color: black;
+
+    }
+
+    .Categories-button {
+        margin-left: 62%;
+
+    }
+
+    @media screen and (max-width: 600px) {
+        .Categories-button {
+            margin-left: 28px;
+        }
+    }
+</style>
+
+<body>
+    <div class="wrapper">
+        <aside id="sidebar" class="js-sidebar">
+            <!-- Content For Sidebar -->
+            <div class="h-100">
+                <div class="sidebar-logo">
+                    <a href="#">Dashboard</a>
+                </div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-header">
+                        Admin Panel
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="fa-solid fa-list pe-2"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#pages" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-solid fa-file-lines pe-2"></i>
+                            Gallery
+                        </a>
+                        <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">Gallery Pages</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">Gallery Images</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#posts" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-solid fa-sliders pe-2"></i>
+                            Posts
+                        </a>
+                        <ul id="posts" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">Post 1</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">Post 2</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">Post 3</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#auth" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-regular fa-user pe-2"></i>
+                            Auth
+                        </a>
+                        <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">Login</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">Register</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">Forgot Password</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="fa-solid fa-list pe-2"></i>
+                            Categories
+                        </a>
+                    </li>
+                    <li class="sidebar-header">
+                        Multi Level Menu
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#multi" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-solid fa-share-nodes pe-2"></i>
+                            Multi Dropdown
+                        </a>
+                        <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link collapsed" data-bs-target="#level-1"
+                                    data-bs-toggle="collapse" aria-expanded="false">Level 1</a>
+                                <ul id="level-1" class="sidebar-dropdown list-unstyled collapse">
+                                    <li class="sidebar-item">
+                                        <a href="#" class="sidebar-link">Level 1.1</a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="#" class="sidebar-link">Level 1.2</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <div class="main ">
+            <nav class="navbar navbar-expand px-3 border-bottom">
+                <button class="btn" id="sidebar-toggle" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse navbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                                <img src="images/person.svg" class="avatar bg-white rounded-circle">
+                            </a>
+                            <div class=" dropdown-menu dropdown-menu-end">
+                                <a href="#" class="dropdown-item">Profile</a>
+                                <a href="#" class="dropdown-item">Setting</a>
+                                <a href="#" class="dropdown-item">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main class="content px-3 py-2">
+                <div class="container-fluid">
+                    <div class="mb-3">
+                        <h4>Admin Dashboard</h4>
+                    </div>
+
+                    <!-- Table Element -->
+                    <div class="card ">
+                        <div class="card-header d-flex">
+                            <h3 class="card-title">
+                                Categories
+                            </h3>
+                            <div class="Categories-button Add"><button type="button" class="btn btn-warning">Add
+                                    Category</button>
+
+                            </div>
+                        </div>
+                        <div class="container bg-white">
+
+                            <div class="row">
+                                <div class="card border-secondary shadow p-3" style="width: 284px; ">
+                                    <img src="images/Gifts.jpeg" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title me-5">Gifts</h5>
+                                        <div class="col">
+                                            <a href="#" class="btn btn-primary">Add Items</a>
+                                            <a href="#" class="btn edit border-primary">Edit</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="card  border-secondary shadow p-3" style="width: 284px; ">
+                                    <img src="images/Coffee Mugs.jpg" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Coffee Mugs</h5>
+                                        <div class="col-1">
+                                            <a href="#" class="btn btn-primary">Add Items</a>
+                                            <a href="#" class="btn edit border-primary">Edit</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card  border-secondary shadow p-3" style="width: 284px; ">
+                                    <img src="images/T-Shirt & Printing.jpeg" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">T-Shirt & Printing</h5>
+                                        <a href="#" class="btn btn-primary">Add Items</a>
+                                        <a href="#" class="btn edit border-primary">Edit</a>
+                                    </div>
+                                </div>
+                                <div class="card  border-secondary shadow p-3" style="width: 284px; ">
+                                    <img src="images/Photo Gifts.webp" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Photo Gifts</h5>
+                                        <a href="#" class="btn btn-primary">Add Items</a>
+                                        <a href="#" class="btn edit border-primary">Edit</a>
+
+                                    </div>
+                                </div>
+                                <div class="card  border-secondary shadow p-3" style="width: 284px; ">
+                                    <img src="images/LED Customized Gifts.jpeg" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">LED Customized Gifts</h5>
+
+                                        <a href="#" class="btn btn-primary">Add Items</a>
+                                        <a href="#" class="btn edit border-primary">Edit</a>
+
+                                    </div>
+                                </div>
+                                <div class="card  border-secondary shadow p-3" style="width: 284px; ">
+                                    <img src="images/Corporate Gift & Rewards.jpeg" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Corporate Gift & Rewards</h5>
+
+                                        <a href="#" class="btn btn-primary">Add Items</a>
+                                        <a href="#" class="btn edit border-primary">Edit</a>
+
+                                    </div>
+                                </div>
+                                <div class="card  border-secondary shadow p-3" style="width: 284px; ">
+                                    <img src="images/Marketing & Promo.jpeg" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Marketing & Promo</h5>
+
+                                        <a href="#" class="btn btn-primary">Add Items</a>
+                                        <a href="#" class="btn edit border-primary">Edit</a>
+
+                                    </div>
+                                </div>
+                                <div class="card  border-secondary shadow p-3" style="width: 284px; ">
+                                    <img src="images/Occasions.jpeg" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Occasions</h5>
+
+                                        <a href="#" class="btn btn-primary">Add Items</a>
+                                        <a href="#" class="btn edit border-primary">Edit</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+            </main>
+
+
+        </div>
+    </div>
+    <script>
+        const sidebarToggle = document.querySelector("#sidebar-toggle");
+        sidebarToggle.addEventListener("click", function () {
+            document.querySelector("#sidebar").classList.toggle("collapsed");
+        });
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
